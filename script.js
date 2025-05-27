@@ -10,8 +10,23 @@ function generatePassword() {
 }
 
 function copyPassword() {
-  const passwordField = document.getElementById('password');
-  passwordField.select();
-  document.execCommand('copy');
-  alert("Hasło skopiowane do schowka!");
+  const password = document.getElementById('password').value;
+  
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(password)
+      .then(() => {
+        alert("Hasło skopiowane do schowka!");
+      })
+      .catch(err => {
+        alert("Nie udało się skopiować hasła.");
+        console.error(err);
+      });
+  } else {
+    // Fallback na starsze przeglądarki
+    const passwordField = document.getElementById('password');
+    passwordField.select();
+    document.execCommand('copy');
+    alert("Hasło skopiowane do schowka (fallback).");
+  }
 }
+
